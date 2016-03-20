@@ -1,6 +1,9 @@
 # RDialogs
 
-TODO: Delete this and add description.
+A ruby wrapper for ncurses dialog and newt whiptail.
+
+RDialogs allows ruby scripts to display dialog boxes to the user for informational purposes,
+or to get input from the user in a friendly way.
 
 
 ## Installation

@@ -10,8 +10,10 @@ Gem::Specification.new do |spec|
   spec.authors = ['Vladimir Suchy']
   spec.email   = ['vs.git@vsuchy.com']
 
-  spec.summary     = 'TODO.'
-  spec.description = 'TODO.'
+  spec.summary     = 'A ruby wrapper for ncurses dialog and newt whiptail.'
+  spec.description = 'RDialogs allows ruby scripts to display dialog boxes using ncurses dialog' \
+    ' or newt whiptail. RDialogs can be used to display information to the user,' \
+    ' or to get input from the user in a frienly way.'
   spec.homepage    = 'https://github.com/vsuchy/RDialogs'
   spec.license     = 'MIT'
 
