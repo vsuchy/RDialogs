@@ -6,11 +6,22 @@ class RDialogs
   ARGS_TABLE = {
     title:         { arg: '--title',         has_value: true  },
     back_title:    { arg: '--backtitle',     has_value: true  },
+
     yes_button:    { arg: '--yes-button',    has_value: true  },
     no_button:     { arg: '--no-button',     has_value: true  },
     ok_button:     { arg: '--ok-button',     has_value: true  },
     cancel_button: { arg: '--cancel-button', has_value: true  },
-    full_buttons:  { arg: '--fb',            has_value: false }
+    default_no:    { arg: '--defaultno',     has_value: false },
+    no_cancel:     { arg: '--nocancel',      has_value: false },
+
+    default_item:  { arg: '--default-item',  has_value: true  },
+    no_item:       { arg: '--noitem',        has_value: false },
+    no_tags:       { arg: '--notags',        has_value: false },
+
+    clear:         { arg: '--clear',         has_value: false },
+    full_buttons:  { arg: '--fb',            has_value: false },
+    scroll_text:   { arg: '--scrolltext',    has_value: false },
+    top_left:      { arg: '--topleft',       has_value: false }
   }
 
   ARGS_DEFAULT = {
@@ -30,16 +41,24 @@ class RDialogs
     @dialog_cmd = dialog_cmd
   end
 
+  def info_box(text, args = {})
+    dialog_run(build_cmd_args('infobox', text, args))
+  end
+
   def message_box(text, args = {})
-    dialog_run("#{parse_args(args)} --msgbox \"#{text}\" #{box_size(args)}")
+    dialog_run(build_cmd_args('msgbox', text, args))
   end
 
   def yesno_box(text, args = {})
-    dialog_run("#{parse_args(args)} --yesno \"#{text}\" #{box_size(args)}")
+    dialog_run(build_cmd_args('yesno', text, args))
   end
 
-  def input_box(text, args = {})
-    dialog_run("#{parse_args(args)} --inputbox \"#{text}\" #{box_size(args)}")
+  def input_box(text, args = {}, default_value = '')
+    dialog_run(build_cmd_args('inputbox', text, args) + " #{default_value}")
+  end
+
+  def password_box(text, args = {}, default_value = '')
+    dialog_run(build_cmd_args('passwordbox', text, args) + " #{default_value}")
   end
 
   private
@@ -62,6 +81,10 @@ class RDialogs
       end
 
       out.join(' ').strip
+    end
+
+    def build_cmd_args(box_type, text, args)
+      "#{parse_args(args)} --#{box_type} \"#{text}\" #{box_size(args)}"
     end
 
     def dialog_run(args)
