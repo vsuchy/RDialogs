@@ -30,12 +30,12 @@ class RDialogs
   }
 
   def initialize(dialog_cmd = 'dialog')
-    unless command_exists?(dialog_cmd)
-      raise "#{dialog_cmd}: command not found"
-    end
-
     unless SUPPORTED_TOOLS.include?(File.basename(dialog_cmd))
       raise "#{dialog_cmd}: command not supported"
+    end
+
+    unless command_exists?(dialog_cmd)
+      raise "#{dialog_cmd}: command not found"
     end
 
     @dialog_cmd = dialog_cmd

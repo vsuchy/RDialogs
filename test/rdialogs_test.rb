@@ -6,7 +6,8 @@ class RDialogsTest < Minitest::Test
     refute_nil ::RDialogs::VERSION
   end
 
-  def test_it_does_something_useful
-    assert true
+  def test_that_it_only_accepts_supported_tools
+    exception = assert_raises(RuntimeError) { RDialogs.new('CocoaDialog') }
+    assert_equal 'CocoaDialog: command not supported', exception.message
   end
 end
