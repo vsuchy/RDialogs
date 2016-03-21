@@ -53,12 +53,18 @@ class RDialogs
     dialog_run(build_cmd_args('yesno', text, args))
   end
 
-  def input_box(text, args = {}, default_value = '')
-    dialog_run(build_cmd_args('inputbox', text, args) + " #{default_value}")
+  def input_box(text, default_value = '', args = {})
+    cmd_args = build_cmd_args('inputbox', text, args)
+    cmd_args += " \"#{default_value}\"" unless default_value.empty?
+
+    dialog_run(cmd_args)
   end
 
-  def password_box(text, args = {}, default_value = '')
-    dialog_run(build_cmd_args('passwordbox', text, args) + " #{default_value}")
+  def password_box(text, default_value = '', args = {})
+    cmd_args = build_cmd_args('passwordbox', text, args)
+    cmd_args += " \"#{default_value}\"" unless default_value.empty?
+
+    dialog_run(cmd_args)
   end
 
   private

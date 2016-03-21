@@ -4,6 +4,7 @@ class RDialogsTest < Minitest::Test
 
   def setup
     @dialog = RDialogs.new('whiptail')
+    @dialog_run = lambda { |args| args }
   end
 
   def test_that_it_has_a_version_number
@@ -22,5 +23,27 @@ class RDialogsTest < Minitest::Test
   def test_that_command_exists
     assert @dialog.send(:command_exists?, 'ruby')
     refute @dialog.send(:command_exists?, 'xxxx')
+  end
+
+  def test_that_info_box_runs_with_correct_arguments
+    @dialog.stub(:dialog_run, @dialog_run) do
+      dialog_args = @dialog.info_box('Hello test.', {
+        width: 70,
+        height: 20,
+        full_buttons: true
+      })
+
+      assert_equal dialog_args, '--fb --infobox "Hello test." 20 70'
+    end
+  end
+
+  def test_that_input_box_runs_with_correct_arguments
+    @dialog.stub(:dialog_run, @dialog_run) do
+      dialog_args = @dialog.input_box('Your name?', 'Vlad', {
+        ok_button: 'OK :)'
+      })
+
+      assert_equal dialog_args, '--ok-button "OK :)" --inputbox "Your name?" 10 50 "Vlad"'
+    end
   end
 end
