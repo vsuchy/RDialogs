@@ -1,10 +1,9 @@
 require 'test_helper'
 
 class RDialogsTest < Minitest::Test
-
   def setup
     @dialog = RDialogs.new('whiptail')
-    @cmd_run = lambda { |args| args }
+    @cmd_run = ->(args) { args }
   end
 
   def test_that_it_has_a_version_number
@@ -27,11 +26,12 @@ class RDialogsTest < Minitest::Test
 
   def test_that_info_box_runs_with_correct_arguments
     @dialog.stub(:cmd_run, @cmd_run) do
-      cmd_args = @dialog.info_box('Hello test.', {
+      cmd_args = @dialog.info_box(
+        'Hello test.',
         width: 70,
         height: 20,
         full_buttons: true
-      })
+      )
 
       assert_equal cmd_args, '--fb --infobox "Hello test." 20 70'
     end
@@ -39,10 +39,12 @@ class RDialogsTest < Minitest::Test
 
   def test_that_input_box_runs_with_correct_arguments
     @dialog.stub(:cmd_run, @cmd_run) do
-      cmd_args = @dialog.input_box('Your name?', 'Vlad', {
+      cmd_args = @dialog.input_box(
+        'Your name?',
+        'Vlad',
         ok_button: 'OK :)',
         full_buttons: true
-      })
+      )
 
       assert_equal cmd_args, '--ok-button "OK :)" --fb --inputbox "Your name?" 10 50 "Vlad"'
     end

@@ -1,13 +1,14 @@
+require 'English'
 require 'rdialogs/version'
 
 # A ruby wrapper for ncurses dialog and newt whiptail.
 class RDialogs
-  SUPPORTED_TOOLS = ['dialog', 'whiptail']
+  SUPPORTED_TOOLS = %w(dialog whiptail).freeze
 
   DEFAULT_DIALOG_SIZE = {
     width: 50,
     height: 10
-  }
+  }.freeze
 
   DIALOGS_TABLE = [
     { name: 'info_box',     arg_name: 'infobox',     params: [:text] },
@@ -15,7 +16,7 @@ class RDialogs
     { name: 'yesno_box',    arg_name: 'yesno',       params: [:text] },
     { name: 'input_box',    arg_name: 'inputbox',    params: [:text, :default_value] },
     { name: 'password_box', arg_name: 'passwordbox', params: [:text, :default_value] }
-  ]
+  ].freeze
 
   COMMON_OPTIONS_TABLE = [
     { name: 'title',         arg_name: 'title',         has_value: true  },
@@ -36,16 +37,11 @@ class RDialogs
     { name: 'full_buttons',  arg_name: 'fb',            has_value: false },
     { name: 'scroll_text',   arg_name: 'scrolltext',    has_value: false },
     { name: 'top_left',      arg_name: 'topleft',       has_value: false }
-  ]
+  ].freeze
 
   def initialize(dialog_cmd = 'dialog')
-    unless SUPPORTED_TOOLS.include?(File.basename(dialog_cmd))
-      raise "#{dialog_cmd}: command not supported"
-    end
-
-    unless command_exists?(dialog_cmd)
-      raise "#{dialog_cmd}: command not found"
-    end
+    raise "#{dialog_cmd}: command not supported" unless SUPPORTED_TOOLS.include?(File.basename(dialog_cmd))
+    raise "#{dialog_cmd}: command not found" unless command_exists?(dialog_cmd)
 
     @dialog_cmd = dialog_cmd
   end
@@ -58,40 +54,40 @@ class RDialogs
 
   private
 
-    def command_exists?(cmd)
-      system("which #{cmd} > /dev/null")
-    end
+  def command_exists?(cmd)
+    system("which #{cmd} > /dev/null")
+  end
 
-    def dialog_size(options)
-      width = options[:width] || DEFAULT_DIALOG_SIZE[:width]
-      height = options[:height] || DEFAULT_DIALOG_SIZE[:height]
+  def dialog_size(options)
+    width = options[:width] || DEFAULT_DIALOG_SIZE[:width]
+    height = options[:height] || DEFAULT_DIALOG_SIZE[:height]
 
-      "#{height} #{width}"
-    end
+    "#{height} #{width}"
+  end
 
-    def parse_params(options)
-      out = options.map do |k, v|
-        option = COMMON_OPTIONS_TABLE.detect { |x| x[:name] == k.to_s }
+  def parse_params(options)
+    out = options.map do |k, v|
+      option = COMMON_OPTIONS_TABLE.detect { |x| x[:name] == k.to_s }
 
-        unless option.nil?
-          option[:has_value] ? "--#{option[:arg_name]} \"#{v}\"" : "--#{option[:arg_name]}"
-        end
+      unless option.nil?
+        option[:has_value] ? "--#{option[:arg_name]} \"#{v}\"" : "--#{option[:arg_name]}"
       end
-
-      out.join(' ').strip
     end
 
-    def build_cmd_args(dialog, params)
-      text = params[0]
-      default_value = "\"#{params[1]}\"" if dialog[:params].include?(:default_value)
-      options = params.size > dialog[:params].size ? params.last : {}
+    out.join(' ').strip
+  end
 
-      "#{parse_params(options)} --#{dialog[:arg_name]} \"#{text}\" #{dialog_size(options)} #{default_value}".strip
-    end
+  def build_cmd_args(dialog, params)
+    text = params[0]
+    default_value = "\"#{params[1]}\"" if dialog[:params].include?(:default_value)
+    options = params.size > dialog[:params].size ? params.last : {}
 
-    def cmd_run(cmd_args)
-      output = `#{@dialog_cmd} #{cmd_args} 3>&1 1>&2 2>&3`
+    "#{parse_params(options)} --#{dialog[:arg_name]} \"#{text}\" #{dialog_size(options)} #{default_value}".strip
+  end
 
-      { output: output, status: $? == 0 }
-    end
+  def cmd_run(cmd_args)
+    output = `#{@dialog_cmd} #{cmd_args} 3>&1 1>&2 2>&3`
+
+    { output: output, status: $CHILD_STATUS.success? }
+  end
 end
