@@ -1,33 +1,42 @@
 require 'rdialogs/version'
 
+# A ruby wrapper for ncurses dialog and newt whiptail.
 class RDialogs
   SUPPORTED_TOOLS = ['dialog', 'whiptail']
 
-  ARGS_TABLE = {
-    title:         { arg: '--title',         has_value: true  },
-    back_title:    { arg: '--backtitle',     has_value: true  },
-
-    yes_button:    { arg: '--yes-button',    has_value: true  },
-    no_button:     { arg: '--no-button',     has_value: true  },
-    ok_button:     { arg: '--ok-button',     has_value: true  },
-    cancel_button: { arg: '--cancel-button', has_value: true  },
-    default_no:    { arg: '--defaultno',     has_value: false },
-    no_cancel:     { arg: '--nocancel',      has_value: false },
-
-    default_item:  { arg: '--default-item',  has_value: true  },
-    no_item:       { arg: '--noitem',        has_value: false },
-    no_tags:       { arg: '--notags',        has_value: false },
-
-    clear:         { arg: '--clear',         has_value: false },
-    full_buttons:  { arg: '--fb',            has_value: false },
-    scroll_text:   { arg: '--scrolltext',    has_value: false },
-    top_left:      { arg: '--topleft',       has_value: false }
-  }
-
-  ARGS_DEFAULT = {
+  DEFAULT_DIALOG_SIZE = {
     width: 50,
     height: 10
   }
+
+  DIALOGS_TABLE = [
+    { name: 'info_box',     arg_name: 'infobox',     params: [:text] },
+    { name: 'message_box',  arg_name: 'msgbox',      params: [:text] },
+    { name: 'yesno_box',    arg_name: 'yesno',       params: [:text] },
+    { name: 'input_box',    arg_name: 'inputbox',    params: [:text, :default_value] },
+    { name: 'password_box', arg_name: 'passwordbox', params: [:text, :default_value] }
+  ]
+
+  COMMON_OPTIONS_TABLE = [
+    { name: 'title',         arg_name: 'title',         has_value: true  },
+    { name: 'back_title',    arg_name: 'backtitle',     has_value: true  },
+
+    { name: 'yes_button',    arg_name: 'yes-button',    has_value: true  },
+    { name: 'no_button',     arg_name: 'no-button',     has_value: true  },
+    { name: 'ok_button',     arg_name: 'ok-button',     has_value: true  },
+    { name: 'cancel_button', arg_name: 'cancel-button', has_value: true  },
+    { name: 'default_no',    arg_name: 'defaultno',     has_value: false },
+    { name: 'no_cancel',     arg_name: 'nocancel',      has_value: false },
+
+    { name: 'default_item',  arg_name: 'default-item',  has_value: true  },
+    { name: 'no_item',       arg_name: 'noitem',        has_value: false },
+    { name: 'no_tags',       arg_name: 'notags',        has_value: false },
+
+    { name: 'clear',         arg_name: 'clear',         has_value: false },
+    { name: 'full_buttons',  arg_name: 'fb',            has_value: false },
+    { name: 'scroll_text',   arg_name: 'scrolltext',    has_value: false },
+    { name: 'top_left',      arg_name: 'topleft',       has_value: false }
+  ]
 
   def initialize(dialog_cmd = 'dialog')
     unless SUPPORTED_TOOLS.include?(File.basename(dialog_cmd))
@@ -41,30 +50,10 @@ class RDialogs
     @dialog_cmd = dialog_cmd
   end
 
-  def info_box(text, args = {})
-    dialog_run(build_cmd_args('infobox', text, args))
-  end
-
-  def message_box(text, args = {})
-    dialog_run(build_cmd_args('msgbox', text, args))
-  end
-
-  def yesno_box(text, args = {})
-    dialog_run(build_cmd_args('yesno', text, args))
-  end
-
-  def input_box(text, default_value = '', args = {})
-    cmd_args = build_cmd_args('inputbox', text, args)
-    cmd_args += " \"#{default_value}\"" unless default_value.empty?
-
-    dialog_run(cmd_args)
-  end
-
-  def password_box(text, default_value = '', args = {})
-    cmd_args = build_cmd_args('passwordbox', text, args)
-    cmd_args += " \"#{default_value}\"" unless default_value.empty?
-
-    dialog_run(cmd_args)
+  DIALOGS_TABLE.each do |dialog|
+    define_method(dialog[:name]) do |*args|
+      cmd_run(build_cmd_args(dialog, args))
+    end
   end
 
   private
@@ -73,28 +62,35 @@ class RDialogs
       system("which #{cmd} > /dev/null")
     end
 
-    def box_size(args)
-      width = args[:width] || ARGS_DEFAULT[:width]
-      height = args[:height] || ARGS_DEFAULT[:height]
+    def dialog_size(options)
+      width = options[:width] || DEFAULT_DIALOG_SIZE[:width]
+      height = options[:height] || DEFAULT_DIALOG_SIZE[:height]
 
       "#{height} #{width}"
     end
 
-    def parse_args(args)
-      out = args.map do |k,v|
-        next if k == :width || k == :height
-        ARGS_TABLE[k][:has_value] ? "#{ARGS_TABLE[k][:arg]} \"#{v}\"" : ARGS_TABLE[k][:arg]
+    def parse_params(options)
+      out = options.map do |k, v|
+        option = COMMON_OPTIONS_TABLE.detect { |x| x[:name] == k.to_s }
+
+        unless option.nil?
+          option[:has_value] ? "--#{option[:arg_name]} \"#{v}\"" : "--#{option[:arg_name]}"
+        end
       end
 
       out.join(' ').strip
     end
 
-    def build_cmd_args(box_type, text, args)
-      "#{parse_args(args)} --#{box_type} \"#{text}\" #{box_size(args)}"
+    def build_cmd_args(dialog, params)
+      text = params[0]
+      default_value = "\"#{params[1]}\"" if dialog[:params].include?(:default_value)
+      options = params.size > dialog[:params].size ? params.last : {}
+
+      "#{parse_params(options)} --#{dialog[:arg_name]} \"#{text}\" #{dialog_size(options)} #{default_value}".strip
     end
 
-    def dialog_run(args)
-      output = `#{@dialog_cmd} #{args} 3>&1 1>&2 2>&3`
+    def cmd_run(cmd_args)
+      output = `#{@dialog_cmd} #{cmd_args} 3>&1 1>&2 2>&3`
 
       { output: output, status: $? == 0 }
     end

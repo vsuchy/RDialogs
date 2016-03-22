@@ -4,11 +4,11 @@ class RDialogsTest < Minitest::Test
 
   def setup
     @dialog = RDialogs.new('whiptail')
-    @dialog_run = lambda { |args| args }
+    @cmd_run = lambda { |args| args }
   end
 
   def test_that_it_has_a_version_number
-    refute_nil ::RDialogs::VERSION
+    refute_nil RDialogs::VERSION
   end
 
   def test_that_it_fails_to_initialize_with_unsupported_tool
@@ -26,24 +26,25 @@ class RDialogsTest < Minitest::Test
   end
 
   def test_that_info_box_runs_with_correct_arguments
-    @dialog.stub(:dialog_run, @dialog_run) do
-      dialog_args = @dialog.info_box('Hello test.', {
+    @dialog.stub(:cmd_run, @cmd_run) do
+      cmd_args = @dialog.info_box('Hello test.', {
         width: 70,
         height: 20,
         full_buttons: true
       })
 
-      assert_equal dialog_args, '--fb --infobox "Hello test." 20 70'
+      assert_equal cmd_args, '--fb --infobox "Hello test." 20 70'
     end
   end
 
   def test_that_input_box_runs_with_correct_arguments
-    @dialog.stub(:dialog_run, @dialog_run) do
-      dialog_args = @dialog.input_box('Your name?', 'Vlad', {
-        ok_button: 'OK :)'
+    @dialog.stub(:cmd_run, @cmd_run) do
+      cmd_args = @dialog.input_box('Your name?', 'Vlad', {
+        ok_button: 'OK :)',
+        full_buttons: true
       })
 
-      assert_equal dialog_args, '--ok-button "OK :)" --inputbox "Your name?" 10 50 "Vlad"'
+      assert_equal cmd_args, '--ok-button "OK :)" --fb --inputbox "Your name?" 10 50 "Vlad"'
     end
   end
 end
