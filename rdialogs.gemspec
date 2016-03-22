@@ -14,7 +14,7 @@ Gem::Specification.new do |spec|
   spec.description = 'RDialogs allows ruby scripts to display dialog boxes using ncurses dialog' \
     ' or newt whiptail. RDialogs can be used to display information to the user,' \
     ' or to get input from the user in a frienly way.'
-  spec.homepage    = 'https://github.com/vsuchy/RDialogs'
+  spec.homepage    = 'http://vsuchy.github.io/RDialogs/'
   spec.license     = 'MIT'
 
   spec.files         = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(features|spec|test)/}) }
