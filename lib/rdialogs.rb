@@ -1,4 +1,5 @@
 require 'English'
+require 'shellwords'
 require 'rdialogs/version'
 
 # A ruby wrapper for ncurses dialog and newt whiptail.
@@ -11,11 +12,12 @@ class RDialogs
   }.freeze
 
   DIALOGS_TABLE = [
-    { name: 'info_box',     arg_name: 'infobox',     params: [:text] },
-    { name: 'message_box',  arg_name: 'msgbox',      params: [:text] },
-    { name: 'yesno_box',    arg_name: 'yesno',       params: [:text] },
+    { name: 'info_box',     arg_name: 'infobox',     params: [:text]                 },
+    { name: 'message_box',  arg_name: 'msgbox',      params: [:text]                 },
+    { name: 'yesno_box',    arg_name: 'yesno',       params: [:text]                 },
     { name: 'input_box',    arg_name: 'inputbox',    params: [:text, :default_value] },
-    { name: 'password_box', arg_name: 'passwordbox', params: [:text, :default_value] }
+    { name: 'password_box', arg_name: 'passwordbox', params: [:text, :default_value] },
+    { name: 'menu',         arg_name: 'menu',        params: [:text, :list]          }
   ].freeze
 
   COMMON_OPTIONS_TABLE = [
@@ -62,15 +64,39 @@ class RDialogs
     width = options[:width] || DEFAULT_DIALOG_SIZE[:width]
     height = options[:height] || DEFAULT_DIALOG_SIZE[:height]
 
-    "#{height} #{width}"
+    { width: width, height: height }
   end
 
-  def parse_params(options)
+  def process_text(text)
+    text.shellescape
+  end
+
+  def process_default_value(dialog, default_value)
+    dialog[:params].include?(:default_value) && default_value ? default_value.shellescape : nil
+  end
+
+  def process_list_values(dialog, list)
+    dialog[:params].include?(:list) ? list.map { |k, v| "#{k.to_s.shellescape} #{v.shellescape}" }.join(' ') : nil
+  end
+
+  def process_sizes(options, list_count)
+    dialog_size = dialog_size(options)
+
+    if list_count
+      list_height = list_count < dialog_size[:height] - 8 ? list_count : dialog_size[:height] - 8
+
+      "#{dialog_size[:height]} #{dialog_size[:width]} #{list_height}"
+    else
+      "#{dialog_size[:height]} #{dialog_size[:width]}"
+    end
+  end
+
+  def process_common_options(options)
     out = options.map do |k, v|
       option = COMMON_OPTIONS_TABLE.detect { |x| x[:name] == k.to_s }
 
       unless option.nil?
-        option[:has_value] ? "--#{option[:arg_name]} \"#{v}\"" : "--#{option[:arg_name]}"
+        option[:has_value] ? "--#{option[:arg_name]} #{v.shellescape}" : "--#{option[:arg_name]}"
       end
     end
 
@@ -78,11 +104,16 @@ class RDialogs
   end
 
   def build_cmd_args(dialog, params)
-    text = params[0]
-    default_value = "\"#{params[1]}\"" if dialog[:params].include?(:default_value)
     options = params.size > dialog[:params].size ? params.last : {}
 
-    "#{parse_params(options)} --#{dialog[:arg_name]} \"#{text}\" #{dialog_size(options)} #{default_value}".strip
+    text = process_text(params.first)
+    default_value = process_default_value(dialog, params[1])
+    list_values = process_list_values(dialog, params[1])
+
+    sizes = process_sizes(options, list_values ? params[1].size : nil)
+    common_options = process_common_options(options)
+
+    "#{common_options} --#{dialog[:arg_name]} #{text} #{sizes} #{default_value || list_values}".strip
   end
 
   def cmd_run(cmd_args)
