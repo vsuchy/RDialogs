@@ -17,7 +17,7 @@ Gem::Specification.new do |spec|
   spec.homepage    = 'http://vsuchy.github.io/RDialogs/'
   spec.license     = 'MIT'
 
-  spec.files         = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(features|spec|test)/}) }
+  spec.files         = `git ls-files -z`.split("\x0")
   spec.require_paths = ['lib']
 
   spec.add_development_dependency 'bundler',  '~> 1.11'
