@@ -17,7 +17,9 @@ class RDialogs
     { name: 'yesno_box',    arg_name: 'yesno',       params: [:text]                 },
     { name: 'input_box',    arg_name: 'inputbox',    params: [:text, :default_value] },
     { name: 'password_box', arg_name: 'passwordbox', params: [:text, :default_value] },
-    { name: 'menu',         arg_name: 'menu',        params: [:text, :list]          }
+    { name: 'menu',         arg_name: 'menu',        params: [:text, :list]          },
+    { name: 'check_list',   arg_name: 'checklist',   params: [:text, :list]          },
+    { name: 'radio_list',   arg_name: 'radiolist',   params: [:text, :list]          }
   ].freeze
 
   COMMON_OPTIONS_TABLE = [
@@ -76,7 +78,15 @@ class RDialogs
   end
 
   def process_list_values(dialog, list)
-    dialog[:params].include?(:list) ? list.map { |k, v| "#{k.to_s.shellescape} #{v.shellescape}" }.join(' ') : nil
+    if dialog[:params].include?(:list)
+      list.map do |k, v|
+        if v.class == Array
+          "#{k.to_s.shellescape} #{v[0].shellescape} #{v[1] ? 'ON' : 'OFF'}"
+        else
+          "#{k.to_s.shellescape} #{v.shellescape}"
+        end
+      end.join(' ')
+    end
   end
 
   def process_sizes(options, list_count)

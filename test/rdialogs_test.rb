@@ -47,4 +47,12 @@ class RDialogsTest < Minitest::Test
       assert_equal '--menu Colors 10 50 2 red 25500 blue 00255 green 01280', cmd_args
     end
   end
+
+  def test_that_check_list_runs_with_correct_arguments
+    @dialog.stub(:cmd_run, @cmd_run) do
+      cmd_args = @dialog.menu('Colors', red: ['25500', false], blue: ['00255', true], green: ['01280', false])
+
+      assert_equal '--menu Colors 10 50 2 red 25500 OFF blue 00255 ON green 01280 OFF', cmd_args
+    end
+  end
 end
