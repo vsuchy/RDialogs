@@ -129,6 +129,6 @@ class RDialogs
   def cmd_run(cmd_args)
     output = `#{@dialog_cmd} #{cmd_args} 3>&1 1>&2 2>&3`
 
-    { output: output, status: $CHILD_STATUS.success? }
+    $CHILD_STATUS.success? ? output : false
   end
 end

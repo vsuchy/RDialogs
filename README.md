@@ -1,6 +1,8 @@
 # RDialogs
 
-A ruby wrapper for ncurses dialog and newt whiptail.
+A ruby wrapper for
+[ncurses dialog](https://en.wikipedia.org/wiki/Dialog_(software))
+and [newt whiptail](https://en.wikipedia.org/wiki/Newt_(programming_library)).
 
 RDialogs allows ruby scripts to display dialog boxes to the user for informational purposes,
 or to get input from the user in a friendly way.
@@ -29,7 +31,41 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here.
+```ruby
+d = RDialogs.new('whiptail')
+d.message_box('Hello World!')
+
+if name = d.input_box("What's your name")
+  puts "Hello #{name}".
+end
+```
+
+Supported dialog types:
+* Info Box (info_box)
+* Message Box (message_box)
+* Yes/No Box (yesno_box)
+* Input Box (input_box)
+* Password Box (password_box)
+* Menu (menu)
+* Check List (check_list)
+* Radio List (radio_list)
+
+Optional parameters:
+* title
+* back_title
+* yes_button
+* no_button
+* ok_button
+* cancel_button
+* default_no
+* no_cancel
+* default_item
+* no_item
+* no_tags
+* clear
+* full_buttons
+* scroll_text
+* top_left
 
 
 ## Contributing
