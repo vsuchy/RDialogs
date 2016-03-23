@@ -41,11 +41,11 @@ end
 ```
 
 Supported dialog types:
-* Info Box ([examples](https://github.com/vsuchy/RDialogs/blob/master/examples/info_list.rb))
-* Message Box ([examples](https://github.com/vsuchy/RDialogs/blob/master/examples/message_list.rb))
-* Yes/No Box ([examples](https://github.com/vsuchy/RDialogs/blob/master/examples/yesno_list.rb))
-* Input Box ([examples](https://github.com/vsuchy/RDialogs/blob/master/examples/input_list.rb))
-* Password Box ([examples](https://github.com/vsuchy/RDialogs/blob/master/examples/password_list.rb))
+* Info Box ([examples](https://github.com/vsuchy/RDialogs/blob/master/examples/info_box.rb))
+* Message Box ([examples](https://github.com/vsuchy/RDialogs/blob/master/examples/message_box.rb))
+* Yes/No Box ([examples](https://github.com/vsuchy/RDialogs/blob/master/examples/yesno_box.rb))
+* Input Box ([examples](https://github.com/vsuchy/RDialogs/blob/master/examples/input_box.rb))
+* Password Box ([examples](https://github.com/vsuchy/RDialogs/blob/master/examples/password_box.rb))
 * Menu ([examples](https://github.com/vsuchy/RDialogs/blob/master/examples/menu.rb))
 * Check List ([examples](https://github.com/vsuchy/RDialogs/blob/master/examples/check_list.rb))
 * Radio List ([examples](https://github.com/vsuchy/RDialogs/blob/master/examples/radio_list.rb))
