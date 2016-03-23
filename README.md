@@ -41,14 +41,14 @@ end
 ```
 
 Supported dialog types:
-* Info Box (info_box)
-* Message Box (message_box)
-* Yes/No Box (yesno_box)
-* Input Box (input_box)
-* Password Box (password_box)
-* Menu (menu)
-* Check List (check_list)
-* Radio List (radio_list)
+* Info Box ([examples](https://github.com/vsuchy/RDialogs/blob/master/examples/info_list.rb))
+* Message Box ([examples](https://github.com/vsuchy/RDialogs/blob/master/examples/message_list.rb))
+* Yes/No Box ([examples](https://github.com/vsuchy/RDialogs/blob/master/examples/yesno_list.rb))
+* Input Box ([examples](https://github.com/vsuchy/RDialogs/blob/master/examples/input_list.rb))
+* Password Box ([examples](https://github.com/vsuchy/RDialogs/blob/master/examples/password_list.rb))
+* Menu ([examples](https://github.com/vsuchy/RDialogs/blob/master/examples/menu.rb))
+* Check List ([examples](https://github.com/vsuchy/RDialogs/blob/master/examples/check_list.rb))
+* Radio List ([examples](https://github.com/vsuchy/RDialogs/blob/master/examples/radio_list.rb))
 
 Optional parameters:
 * title
