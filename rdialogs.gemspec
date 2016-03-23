@@ -13,12 +13,13 @@ Gem::Specification.new do |spec|
   spec.summary     = 'A ruby wrapper for ncurses dialog and newt whiptail.'
   spec.description = 'RDialogs allows ruby scripts to display dialog boxes using ncurses dialog' \
     ' or newt whiptail. RDialogs can be used to display information to the user,' \
-    ' or to get input from the user in a frienly way.'
+    ' or to get input from the user in a friendly way.'
   spec.homepage    = 'http://vsuchy.github.io/RDialogs/'
   spec.license     = 'MIT'
 
   spec.files         = `git ls-files -z`.split("\x0")
   spec.require_paths = ['lib']
+  spec.required_ruby_version = '>= 2.0.0'
 
   spec.add_development_dependency 'bundler',  '~> 1.11'
   spec.add_development_dependency 'rake',     '~> 10.0'
