@@ -34,7 +34,9 @@
           <h1>
 <a id="rdialogs" class="anchor" href="#rdialogs" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>RDialogs</h1>
 
-<p>A ruby wrapper for ncurses dialog and newt whiptail.</p>
+<p>A ruby wrapper for
+<a href="https://en.wikipedia.org/wiki/Dialog_(software)">ncurses dialog</a>
+and <a href="https://en.wikipedia.org/wiki/Newt_(programming_library)">newt whiptail</a>.</p>
 
 <p>RDialogs allows ruby scripts to display dialog boxes to the user for informational purposes,
 or to get input from the user in a friendly way.</p>
@@ -63,7 +65,45 @@ or to get input from the user in a friendly way.</p>
 <h2>
 <a id="usage" class="anchor" href="#usage" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Usage</h2>
 
-<p>TODO: Write usage instructions here.</p>
+<div class="highlight highlight-source-ruby"><pre>d <span class="pl-k">=</span> <span class="pl-c1">RDialogs</span>.<span class="pl-k">new</span>(<span class="pl-s"><span class="pl-pds">'</span>whiptail<span class="pl-pds">'</span></span>)
+d.message_box(<span class="pl-s"><span class="pl-pds">'</span>Hello World!<span class="pl-pds">'</span></span>)
+
+<span class="pl-k">if</span> name <span class="pl-k">=</span> d.input_box(<span class="pl-s"><span class="pl-pds">"</span>What's your name<span class="pl-pds">"</span></span>)
+  puts <span class="pl-s"><span class="pl-pds">"</span>Hello <span class="pl-pse">#{</span><span class="pl-s1">name</span><span class="pl-pse"><span class="pl-s1">}</span></span><span class="pl-pds">"</span></span>.
+<span class="pl-k">end</span></pre></div>
+
+<p>Supported dialog types:</p>
+
+<ul>
+<li>Info Box (<a href="https://github.com/vsuchy/RDialogs/blob/master/examples/info_box.rb">examples</a>)</li>
+<li>Message Box (<a href="https://github.com/vsuchy/RDialogs/blob/master/examples/message_box.rb">examples</a>)</li>
+<li>Yes/No Box (<a href="https://github.com/vsuchy/RDialogs/blob/master/examples/yesno_box.rb">examples</a>)</li>
+<li>Input Box (<a href="https://github.com/vsuchy/RDialogs/blob/master/examples/input_box.rb">examples</a>)</li>
+<li>Password Box (<a href="https://github.com/vsuchy/RDialogs/blob/master/examples/password_box.rb">examples</a>)</li>
+<li>Menu (<a href="https://github.com/vsuchy/RDialogs/blob/master/examples/menu.rb">examples</a>)</li>
+<li>Check List (<a href="https://github.com/vsuchy/RDialogs/blob/master/examples/check_list.rb">examples</a>)</li>
+<li>Radio List (<a href="https://github.com/vsuchy/RDialogs/blob/master/examples/radio_list.rb">examples</a>)</li>
+</ul>
+
+<p>Optional parameters:</p>
+
+<ul>
+<li>title</li>
+<li>back_title</li>
+<li>yes_button</li>
+<li>no_button</li>
+<li>ok_button</li>
+<li>cancel_button</li>
+<li>default_no</li>
+<li>no_cancel</li>
+<li>default_item</li>
+<li>no_item</li>
+<li>no_tags</li>
+<li>clear</li>
+<li>full_buttons</li>
+<li>scroll_text</li>
+<li>top_left</li>
+</ul>
 
 <h2>
 <a id="contributing" class="anchor" href="#contributing" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Contributing</h2>
