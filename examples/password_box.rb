@@ -12,10 +12,10 @@ puts "Your password: #{password || 'n/a'}."
 password = d.password_box('Enter your password', 'secret', title: 'This is title.', full_buttons: true)
 
 case password
-  when false
-    puts 'Canceled.'
-  when ''
-    puts 'No input was submitted.'
-  else
-    puts "Your password: #{password}."
+when false
+  puts 'Canceled.'
+when ''
+  puts 'No input was submitted.'
+else
+  puts "Your password: #{password}."
 end

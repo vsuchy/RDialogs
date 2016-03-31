@@ -17,10 +17,10 @@ puts "You selected: #{selected_actions || 'nothing'}."
 selected_actions = d.check_list('Choose action:', list_items, title: 'This is title.', ok_button: 'GO')
 
 case selected_actions
-  when false
-    puts 'Canceled.'
-  when ''
-    puts 'Nothing was selected.'
-  else
-    puts "Selected: #{selected_actions}"
+when false
+  puts 'Canceled.'
+when ''
+  puts 'Nothing was selected.'
+else
+  puts "Selected: #{selected_actions}"
 end

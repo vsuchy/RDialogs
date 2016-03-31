@@ -12,10 +12,10 @@ puts "Hello #{name || 'anonymous coward'}."
 color = d.input_box("What's your favotite color?", 'Blue', title: 'This is title.', full_buttons: true)
 
 case color
-  when false
-    puts 'Canceled.'
-  when ''
-    puts 'No input was submitted.'
-  else
-    puts "#{color} is indeed a beautiful color."
+when false
+  puts 'Canceled.'
+when ''
+  puts 'No input was submitted.'
+else
+  puts "#{color} is indeed a beautiful color."
 end

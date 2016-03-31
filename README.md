@@ -35,7 +35,7 @@ Or install it yourself as:
 d = RDialogs.new('whiptail')
 d.message_box('Hello World!')
 
-if name = d.input_box("What's your name")
+if name = d.input_box("What's your name?")
   puts "Hello #{name}".
 end
 ```
