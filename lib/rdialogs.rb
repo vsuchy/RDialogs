@@ -59,7 +59,9 @@ class RDialogs
   private
 
   def command_exists?(cmd)
-    system("which #{cmd} > /dev/null")
+    ENV['PATH'].split(File::PATH_SEPARATOR).any? do |path|
+      File.executable?(File.join(path, cmd))
+    end
   end
 
   def dialog_size(options)
