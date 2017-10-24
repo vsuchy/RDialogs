@@ -1,12 +1,18 @@
+env:
+  global:
+    - CC_TEST_REPORTER_ID=0de11deef0069410946fee3803356da392661dd3407cf1d5b57d4939fbfa1167
+
 language: ruby
 rvm:
-  - 2.3.0
+  - 2.4.0
 
-before_install:
+before_script:
   - sudo apt-get install whiptail
-  - gem install bundler -v '~> 1.11'
-script: bundle exec rake test
-
-addons:
-  code_climate:
-    repo_token: 0de11deef0069410946fee3803356da392661dd3407cf1d5b57d4939fbfa1167
+  - gem install bundler -v '~> 1.15'
+  - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+  - chmod +x ./cc-test-reporter
+  - ./cc-test-reporter before-build
+script:
+  - bundle exec rake test
+after_script:
+  - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
