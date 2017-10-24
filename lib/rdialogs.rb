@@ -80,15 +80,15 @@ class RDialogs
   end
 
   def process_list_values(dialog, list)
-    if dialog[:params].include?(:list)
-      list.map do |k, v|
-        if v.class == Array
-          "#{k.to_s.shellescape} #{v[0].shellescape} #{v[1] ? 'ON' : 'OFF'}"
-        else
-          "#{k.to_s.shellescape} #{v.shellescape}"
-        end
-      end.join(' ')
-    end
+    return unless dialog[:params].include?(:list)
+
+    list.map do |k, v|
+      if v.class == Array
+        "#{k.to_s.shellescape} #{v[0].shellescape} #{v[1] ? 'ON' : 'OFF'}"
+      else
+        "#{k.to_s.shellescape} #{v.shellescape}"
+      end
+    end.join(' ')
   end
 
   def process_sizes(options, list_count)
