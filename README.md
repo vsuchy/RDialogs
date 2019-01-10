@@ -7,10 +7,6 @@ and [newt whiptail](https://en.wikipedia.org/wiki/Newt_(programming_library)).
 RDialogs allows ruby scripts to display dialog boxes to the user for informational purposes,
 or to get input from the user in a friendly way.
 
-[![Build Status](https://travis-ci.org/vsuchy/RDialogs.svg?branch=master)](https://travis-ci.org/vsuchy/RDialogs)
-[![Code Climate](https://codeclimate.com/github/vsuchy/RDialogs/badges/gpa.svg)](https://codeclimate.com/github/vsuchy/RDialogs)
-[![Test Coverage](https://codeclimate.com/github/vsuchy/RDialogs/badges/coverage.svg)](https://codeclimate.com/github/vsuchy/RDialogs/coverage)
-
 
 ## Installation
 
