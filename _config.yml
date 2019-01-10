@@ -1,0 +1,8 @@
+title: RDialogs
+description: A ruby wrapper for ncurses dialog and newt whiptail.
+google_analytics: 
+show_downloads: true
+theme: jekyll-theme-hacker
+
+gems:
+  - jekyll-mentions
