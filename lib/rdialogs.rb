@@ -4,7 +4,7 @@ require 'rdialogs/version'
 
 # A ruby wrapper for ncurses dialog and newt whiptail.
 class RDialogs
-  SUPPORTED_TOOLS = %w(dialog whiptail).freeze
+  SUPPORTED_TOOLS = %w[dialog whiptail].freeze
 
   DEFAULT_DIALOG_SIZE = {
     width: 50,
@@ -12,14 +12,14 @@ class RDialogs
   }.freeze
 
   DIALOGS_TABLE = [
-    { name: 'info_box',     arg_name: 'infobox',     params: [:text]                 },
-    { name: 'message_box',  arg_name: 'msgbox',      params: [:text]                 },
-    { name: 'yesno_box',    arg_name: 'yesno',       params: [:text]                 },
-    { name: 'input_box',    arg_name: 'inputbox',    params: [:text, :default_value] },
-    { name: 'password_box', arg_name: 'passwordbox', params: [:text, :default_value] },
-    { name: 'menu',         arg_name: 'menu',        params: [:text, :list]          },
-    { name: 'check_list',   arg_name: 'checklist',   params: [:text, :list]          },
-    { name: 'radio_list',   arg_name: 'radiolist',   params: [:text, :list]          }
+    { name: 'info_box',     arg_name: 'infobox',     params: %i[text]               },
+    { name: 'message_box',  arg_name: 'msgbox',      params: %i[text]               },
+    { name: 'yesno_box',    arg_name: 'yesno',       params: %i[text]               },
+    { name: 'input_box',    arg_name: 'inputbox',    params: %i[text default_value] },
+    { name: 'password_box', arg_name: 'passwordbox', params: %i[text default_value] },
+    { name: 'menu',         arg_name: 'menu',        params: %i[text list]          },
+    { name: 'check_list',   arg_name: 'checklist',   params: %i[text list]          },
+    { name: 'radio_list',   arg_name: 'radiolist',   params: %i[text list]          }
   ].freeze
 
   COMMON_OPTIONS_TABLE = [
